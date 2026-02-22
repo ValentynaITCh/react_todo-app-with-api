@@ -33,14 +33,21 @@ export const TodoItem: React.FC<Props> = ({
     inputFocusRef.current?.focus();
   }, [isEditing]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setNewTitle(e.target.value);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setNewTitle(e.target.value);
 
   const handleBlur = () => handleUpdateTodo(todo.id, newTitle);
 
   const handleSubmit = (e: React.FormEvent) => {
-            e.preventDefault();
-            handleUpdateTodo(todo.id, newTitle);
-          }
+    e.preventDefault();
+    handleUpdateTodo(todo.id, newTitle);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  if (e.key === 'Escape') {
+    setEditingTodoId(null);
+  }
+};
 
   return (
     <div
@@ -79,9 +86,7 @@ export const TodoItem: React.FC<Props> = ({
           </button>
         </>
       ) : (
-        <form
-          onSubmit={handleSubmit}
-        >
+        <form onSubmit={handleSubmit}>
           <input
             ref={inputFocusRef}
             data-cy="TodoTitleField"
@@ -91,11 +96,7 @@ export const TodoItem: React.FC<Props> = ({
             value={newTitle}
             onChange={handleChange}
             onBlur={handleBlur}
-            onKeyDown={e => {
-              if (e.key === 'Escape') {
-                setEditingTodoId(null);
-              }
-            }}
+            onKeyDown={handleKeyDown}
           />
         </form>
       )}
