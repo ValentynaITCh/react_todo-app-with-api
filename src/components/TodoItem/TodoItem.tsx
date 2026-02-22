@@ -33,6 +33,15 @@ export const TodoItem: React.FC<Props> = ({
     inputFocusRef.current?.focus();
   }, [isEditing]);
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setNewTitle(e.target.value);
+
+  const handleBlur = () => handleUpdateTodo(todo.id, newTitle);
+
+  const handleSubmit = (e: React.FormEvent) => {
+            e.preventDefault();
+            handleUpdateTodo(todo.id, newTitle);
+          }
+
   return (
     <div
       key={todo.id}
@@ -71,10 +80,7 @@ export const TodoItem: React.FC<Props> = ({
         </>
       ) : (
         <form
-          onSubmit={e => {
-            e.preventDefault();
-            handleUpdateTodo(todo.id, newTitle);
-          }}
+          onSubmit={handleSubmit}
         >
           <input
             ref={inputFocusRef}
@@ -83,8 +89,8 @@ export const TodoItem: React.FC<Props> = ({
             className="todo__title-field"
             placeholder="Empty todo will be deleted"
             value={newTitle}
-            onChange={e => setNewTitle(e.target.value)}
-            onBlur={() => handleUpdateTodo(todo.id, newTitle)}
+            onChange={handleChange}
+            onBlur={handleBlur}
             onKeyDown={e => {
               if (e.key === 'Escape') {
                 setEditingTodoId(null);
