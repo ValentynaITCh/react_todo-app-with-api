@@ -200,7 +200,7 @@ export const App: React.FC = () => {
       : todos.filter(todo => todo.completed);
 
     try {
-      setLoadingsIds(todos.map(todo => todo.id));
+      setLoadingsIds(todosToUpdate.map(todo => todo.id));
       await Promise.all(
         todosToUpdate.map(todo =>
           updateTodo(todo.id, { completed: needToDoCompletedTodo }),
